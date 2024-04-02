@@ -81,8 +81,8 @@ Visuals
   > By Screen (Song In Progress):
   > - Top Left: Song Name (& Difficulty)
   > - Top Right: Song Accuracy by % (:.2f)
-  > - Center Column: Notes & Note-paths
-  > - Left & Right Columns: Note accuracy text
+  > - Center Column(s): Notes & Note-paths
+  > - Center Column: Note accuracy text & Current Combo (Over/under notes)
   > 
   > By Screen (Results Screen):
   > - Top Left: Song Name (& Difficulty)
@@ -96,6 +96,13 @@ Key / Terminology:
   > - Songs: Songs / Tracks
   > - Beats: Notes (from a Beatmap)
   > - Beatmap: Think of a music score / music sheet
+
+State Flow Diagram:
+- > Technical: State Machine
+  > - START -> Selection -> Play -> Results -> Selection || Exit
+  > - ... Selection -> Credits -> Selection
+  > - ... Selection -> Quit
+![Rhythm Game - State Machine Diagram.png](Rhythm%20Game%20-%20State%20Machine%20Diagram.png)
 
 Referenced Games
 - OSU (Desktop)
