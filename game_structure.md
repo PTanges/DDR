@@ -4,6 +4,7 @@
 
 Game Initialization
 - > Init Pygame
+  > - Read stats from save file for songs (or at the end of the song)
   > - Define Colours by R G B, global?
   > - Define Key Mapping (WASD, ASDF, QWER, or Arrow Keys or ALL)
   > - Define Note Properties (Speed, L/W by sprite size, position by Screen Dimensions)
@@ -40,6 +41,10 @@ Song Data:
   > - - Technical: (1) or (4) Spritegroups
   > - - T!Implement (4) Pros: May be easier to implement beat check on keydown instead of reading the ENTIRE (1) sprite group
 - > Song Complete:
+  > - Read save file for previous stats.
+  > - - New high score? New highest streak?
+  > - - Data Validation: In case of external tampering, ignore/overwrite save file
+  > - - Technical: XML File. Store values as integers. Todo: Research compatability with Python
   > - New Screen: Score shown!
   > - Stats: Misses, Goods, Greats, Perfects
   > - Longest Streak
@@ -52,6 +57,7 @@ Song Data:
   > - - Great = 75
   > - - Good = 25
   > - - Miss = 0 (derived by Beatmap.quantity - P.count - Gr.count - Go.count = Miss.count)
+  > - Write stats to save file
   > - Button to return to Track Selection / Quit Game
 
 Development Checklist:
