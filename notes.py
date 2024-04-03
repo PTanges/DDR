@@ -70,7 +70,8 @@ class Notes:
             _note = self.find_nearest_arrow(event_type, key_manager)
             if _note == None: return
 
-            distance = self.measure_note_distance()
+            distance = self.measure_note_distance(_note)
+            print(f'Note Distance: {distance:.2f}')
             _grace_distance = self.settings.note_leniency
             if distance < _grace_distance and distance >= 0: _note.delete_note() # Perfect
             elif distance < (_grace_distance * 2) and distance >= _grace_distance: _note.delete_note() # Great
@@ -87,16 +88,12 @@ class Notes:
         # Parse notes in the same column as keypress_direction
         for _note in self.note_group:
             if _note.direction == _keypress_direction:
-                _track_notes.append(_note)
-
-        note = _track_notes[0]
-
-        return note
+                return _note
 
     def measure_note_distance(self, note):
         # Assign accuracy as well
         # distance = (note.rect.y - track bottom), will need a funct for track bottom
-        distance = self.settings.screen_height - 240 - note.y
+        distance = self.settings.screen_height - 40 - note.y
         # where 560 is the height of the track WITHOUT the bottom
 
         # Current Implementation: Index[0] of the spritegroup on a specific track

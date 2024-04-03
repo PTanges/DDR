@@ -8,6 +8,7 @@ Task: Rhythm Game
 - Read further details in game_structure.md
 '''
 
+import sys
 import pygame as pg
 import pygame.display
 import time
@@ -59,6 +60,7 @@ class GM:
                     # Cinematic Ending Sequence, ie melodic jingle
                     # Save any possible data necessary
                     pg.quit()
+                    sys.exit()
                 case _: # equivalent to "else"
                     pass
             # end match
@@ -111,7 +113,7 @@ class GM:
                 notes.randomly_generate_note()
             prev_ticks = ticks
 
-            self.check_events(key_manager)
+            self.check_events(key_manager, notes)
 
             # move notes down
             notes.note_group.update()
@@ -128,20 +130,23 @@ class GM:
         action = "RESULTS"
         return action
 
-    def check_events(self, key_manager):
+    def check_events(self, key_manager, notes):
         for event in pg.event.get():
             type = event.type
             # if type in key_manager.keyactions:
-            if type == (pg.K_UP or pg.K_LEFT or pg.K_RIGHT or pg.K_DOWN):
-                self.notes.compare_keypress_with_notes(type, key_manager)
-                # Play a 'donk' sfx (SFX by Toby Fox would be appropriate)
-                # with a rand.pitch +/-0.05, with "Perfect" being the highest...
+            if type == pg.KEYDOWN:
+                key = event.key
+                if key in key_manager.keyactions:
+                    print("HELLO")
+                    notes.compare_keypress_with_notes(key, key_manager)
+                    # Play a 'donk' sfx (SFX by Toby Fox would be appropriate)
+                    # with a rand.pitch +/-0.05, with "Perfect" being the highest...
 
-                # Peek into respective column (note sprite group) for up/down/etc
-                # Measure distance from track_bottom to closest note
-                # (loop through respective sprite group)
-                # - if one sprite group, add value for L R Up D
-                # and then if for if col1-U and col2-L, etc
+                    # Peek into respective column (note sprite group) for up/down/etc
+                    # Measure distance from track_bottom to closest note
+                    # (loop through respective sprite group)
+                    # - if one sprite group, add value for L R Up D
+                    # and then if for if col1-U and col2-L, etc
             elif type == pg.QUIT:
                 action = "EXIT"
                 return action
