@@ -1,6 +1,6 @@
 class Settings:
-    SW_default = 1280
-    SH_default = 720
+    SW_default = 800
+    SH_default = 600
     FPS_default = 60
     def __init__(self):
         self.screen_width = self.SW_default
