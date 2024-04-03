@@ -10,10 +10,14 @@ Task: Rhythm Game
 
 import pygame as pg
 import pygame.display
+import time
 from game_config import Settings
 from game_config import Config
 from keybinds import keyboard_commands
 from notes import Notes
+from audio import Audio
+from pygame import mixer
+from scoreboard import Scoreboard
 
 class GM:
     def __init__(self):
@@ -24,12 +28,14 @@ class GM:
         self.config = Config()
         self.screen = pygame.display.set_mode(self.settings.screen_dimensions)
         self.clock = pg.time.Clock()
+        self.audio = Audio()
         self.game_powerbox_switch = True
         active_state = ""
 
     def game_loop(self):
         states = self._game_states()
         key_manager = keyboard_commands(game=self)
+        self.scoreboard = Scoreboard(game=self)
         active_state = states.game_start
         st_input = ""  # No Action
         while self.game_powerbox_switch:
@@ -61,19 +67,15 @@ class GM:
         return
 
     def track_selection_screen(self):
-        while True:
-            break
+        # Automatically going to choose Rain Garden
+        print("Playing Rain Garden.mp3...")
+
+        # Scoreboard keeps a list of song_data's, use for displaying the tracks on selection screen
         # SONG_NAME = ...
         # self.credits = ...
         # self.settings = ...
         # self.play_song = Button(game=self, text='SONG_NAME')
         # for song in track_list {self.song = Button...}
-
-        '''
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        '''
 
         '''
         button chosen will reflect the next state, -> Credits || Song || Settings
@@ -87,13 +89,26 @@ class GM:
 
     def play_track_screen(self, key_manager):
         notes = Notes(game=self)
-        '''
-        while loop until song is over
-            update display
+        # Draw Tracks + Text
+
+        self.audio.play_music(self.audio.track01)
+        while mixer.get_busy() == False:
+            # Draw Notes
+
+
+            for event in pygame.event.get():
+                if event.type in key_manager.keyactions:
+                    # Peek into respective column (note sprite group) for up/down/etc
+                    # Measure distance from track_bottom to closest note (loop through respective sprite group)
+                    # - if one sprite group, add value for L R Up D and then if for if col1-U and col2-L, etc
+                    pass
+            # move notes down
+            # update display
         # end while
-        return next_state which is results
-        '''
-        pass
+
+        action = "RESULTS"
+        return action
+
 
     def update_display(self):
         pg.display.flip()
