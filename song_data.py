@@ -1,5 +1,3 @@
-import pygame as pg
-
 class Song_Data:
     difficulties = ["Beginner", "Intermediate", "Advanced"]
 

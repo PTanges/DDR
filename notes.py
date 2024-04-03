@@ -3,6 +3,7 @@ from pygame.sprite import Sprite
 from vector import Vector
 from random import randint
 from scoreboard import Scoreboard
+from keybinds import keyboard_commands
 
 class Notes:
     note_images = []
@@ -18,6 +19,13 @@ class Notes:
         self.config = game.config
         self.scoreboard = game.scoreboard
         self.gravity = Vector(0, 5)
+
+        '''
+        self.current_combo_score = 0
+        self.combo_high_score = 0
+        self.isComboing = False
+        # May not be in this class, in update for note where kill for set combo = False
+        '''
 
         self.note_group = pg.sprite.Group()
 
@@ -57,7 +65,47 @@ class Notes:
         note.rect.y = note.y
         self.note_group.add(note)
 
-    '''
+    def compare_keypress_with_notes(self, event_type, key_manager):
+        if len(self.note_group) > 0:
+            _note = self.find_nearest_arrow(event_type, key_manager)
+            if _note == None: return
+
+            distance = self.measure_note_distance()
+            _grace_distance = self.settings.note_leniency
+            if distance < _grace_distance and distance >= 0: _note.delete_note() # Perfect
+            elif distance < (_grace_distance * 2) and distance >= _grace_distance: _note.delete_note() # Great
+            elif distance < (_grace_distance * 3) and distance >= (_grace_distance * 2): _note.delete_note() # Good
+            elif distance < (_grace_distance * 5) and distance >= (_grace_distance * 3): _note.delete_note() # Miss
+            else: return # outside of range, no action taken
+        # end funct
+
+    def find_nearest_arrow(self, event_type, key_manager):
+        note = Note(self.game)
+        _keypress_direction = key_manager.translate_default_key_event(event_type)
+        _track_notes = []
+
+        # Parse notes in the same column as keypress_direction
+        for _note in self.note_group:
+            if _note.direction == _keypress_direction:
+                _track_notes.append(_note)
+
+        note = _track_notes[0]
+
+        return note
+
+    def measure_note_distance(self, note):
+        # Assign accuracy as well
+        # distance = (note.rect.y - track bottom), will need a funct for track bottom
+        distance = self.settings.screen_height - 240 - note.y
+        # where 560 is the height of the track WITHOUT the bottom
+
+        # Current Implementation: Index[0] of the spritegroup on a specific track
+        # will be considered "on"/collision with the track bottom at all times
+        # since there's grace, we do NOT want to use spritegroup.collision
+        # distance = 0
+        return distance
+
+    ''' # redundant, in note sprite
     def check_baseline(self):
         pass
         
@@ -79,7 +127,7 @@ class Note(Sprite):
         self.config = game.config
         self.scoreboard = game.scoreboard
         self.gravity = Vector(0, 2.5)
-        self.direction = ""
+        self._direction = ""
 
         self.image = self.note_images[0]
         self.rect = self.image.get_rect()
@@ -111,6 +159,14 @@ class Note(Sprite):
     def check_floor(self):
         if self.rect.y > self.screen.get_height():
             self.isCrossLine = True
+
+    def delete_note(self):
+        # Score Information here perhaps
+        self.kill()
+
+    property
+    def direction(self):
+        return self._direction
     '''
     Implementation Idea:
     To assign beats to a beatmap (instead of manual), play the song and map the beats (in real time) to key presses

@@ -11,6 +11,7 @@ Link - < https: // www.pygame.org / docs / ref / music.html >
 class Audio:
     _URL_PREFIX = "Sounds/Tracks/"
     track01 = _URL_PREFIX + "Rain Garden.mp3"
+    track01_title = "Rain Garden"
     default_volume = 0.5
     # glob walk tracks file for all track names
 

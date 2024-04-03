@@ -21,6 +21,14 @@ class keyboard_commands:
         if keys[self.down]: actions.append("DOWN")
         return actions
 
+    def translate_default_key_event(self, key_event):
+        translation = ""
+        if key_event == self.up: translation = ("UP")
+        if key_event == self.left: translation = ("LEFT")
+        if key_event == self.right: translation = ("RIGHT")
+        if key_event == self.down: translation = ("DOWN")
+        return translation
+
     # Accessibility to do: Implement alternative keybinds
     # through a Settings screen accessible on the Track Screen
     def set_keybind(self):

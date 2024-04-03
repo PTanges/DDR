@@ -20,6 +20,7 @@ from notes import Track
 from audio import Audio
 from pygame import mixer
 from scoreboard import Scoreboard
+from song_data import Song_Data
 
 class GM:
     def __init__(self):
@@ -76,6 +77,11 @@ class GM:
         # Automatically going to choose Rain Garden
         print("Playing Rain Garden.mp3...")
 
+        self.scoreboard.song_list.append(self.audio.track01_title)
+        self.song_data = Song_Data()
+        self.scoreboard.scores[self.audio.track01_title] = self.song_data
+
+
         # Scoreboard keeps a list of song_data's,
         # use for displaying the tracks on selection screen
         # SONG_NAME = ...
@@ -105,20 +111,8 @@ class GM:
                 notes.randomly_generate_note()
             prev_ticks = ticks
 
-            for event in pygame.event.get():
-                if event.type in key_manager.keyactions:
-                    # Play a 'donk' sfx (SFX by Toby Fox would be appropriate)
-                    # with a rand.pitch +/-0.05, with "Perfect" being the highest...
+            self.check_events(key_manager)
 
-                    # Peek into respective column (note sprite group) for up/down/etc
-                    # Measure distance from track_bottom to closest note
-                    # (loop through respective sprite group)
-                    # - if one sprite group, add value for L R Up D
-                    # and then if for if col1-U and col2-L, etc
-                    pass
-                elif event.type == pg.QUIT:
-                    action = "EXIT"
-                    return action
             # move notes down
             notes.note_group.update()
 
@@ -134,6 +128,23 @@ class GM:
         action = "RESULTS"
         return action
 
+    def check_events(self, key_manager):
+        for event in pg.event.get():
+            type = event.type
+            # if type in key_manager.keyactions:
+            if type == (pg.K_UP or pg.K_LEFT or pg.K_RIGHT or pg.K_DOWN):
+                self.notes.compare_keypress_with_notes(type, key_manager)
+                # Play a 'donk' sfx (SFX by Toby Fox would be appropriate)
+                # with a rand.pitch +/-0.05, with "Perfect" being the highest...
+
+                # Peek into respective column (note sprite group) for up/down/etc
+                # Measure distance from track_bottom to closest note
+                # (loop through respective sprite group)
+                # - if one sprite group, add value for L R Up D
+                # and then if for if col1-U and col2-L, etc
+            elif type == pg.QUIT:
+                action = "EXIT"
+                return action
 
     def update_display(self):
         pg.display.update()
@@ -143,32 +154,28 @@ class GM:
         track_x_distance = self.screen.get_width() // 9
         track_length = self.screen.get_width() // track_size
 
-        x = 1
-        for _ in range(4):
+        _x = 1
+        for i in range(4):
             track_y = self.screen.get_height() - track_size
-            track_x = (track_x_distance * x) + (track_size / 2)
-            self.sprites.add(Track(
-                size=track_size,
-                x=track_x,
-                y=track_y,
-                isBottom=True))
-            x += 2
+            track_x = (track_x_distance * _x) + (track_size / 2)
+            self.sprites.add(Track(size=track_size, x=track_x, y=track_y, isBottom=True))
+            # print({track_y})
+            _x += 2
+        # end for
         
         section: pg.Surface
-        x = 1
-        y = 1 # Count including the track bottom
-        for _ in range(4):
-            for _ in range(track_length):
-                track_y = self.screen.get_height() - (track_size * y)
-                track_x = (track_x_distance * x) + (track_size / 2)
-                self.sprites.add(Track(
-                    size=track_size,
-                    x=track_x,
-                    y=track_y,
-                    isBottom=False))
-                y += 1
-            x += 2
-            y = 1
+        _x = 1
+        _y = 1 # Count including the track bottom
+        for i in range(4):
+            for j in range(track_length):
+                track_y = self.screen.get_height() - (track_size * _y)
+                track_x = (track_x_distance * _x) + (track_size / 2)
+                self.sprites.add(Track(size=track_size, x=track_x, y=track_y, isBottom=False))
+                _y += 1
+            # end for
+            _x += 2
+            _y = 1
+        # end for
     
     class _game_states:
         def __init__(self):

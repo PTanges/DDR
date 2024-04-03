@@ -8,6 +8,7 @@ class Settings:
         self.screen_dimensions = (self.screen_width, self.screen_height)
 
         self.FPS = self.FPS_default
+        self.note_leniency = self.screen_height / 40
 
 class Config:
     WHITE = (255, 255, 255)
