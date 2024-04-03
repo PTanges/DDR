@@ -54,7 +54,7 @@ class Notes:
         pass
         '''
         for note in self.note_group():
-            if note.y < track_bottom.y:
+            if note.y > track_bottom.y:
                 note.isCrossLine = True
         '''
 
