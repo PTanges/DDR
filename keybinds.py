@@ -21,7 +21,8 @@ class keyboard_commands:
         if keys[self.down]: actions.append("DOWN")
         return actions
 
-    # Accessibility to do: Implement alternative keybinds through a Settings screen accessible on the Track Screen
+    # Accessibility to do: Implement alternative keybinds
+    # through a Settings screen accessible on the Track Screen
     def set_keybind(self):
         # Take user input (from keyboard OR external tools, ie mouse or controller)
         # Validate -> Map to internal value

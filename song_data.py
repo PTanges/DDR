@@ -39,5 +39,6 @@ class Song_Data:
         pass
 
     def import_song_data(self):
-        # with open file read for file_name in glob.walk of the Tracks folder, read the sav files with matching names (truncate.mp3)
+        # with open file read for file_name in glob.walk of the Tracks folder,
+        # read the sav files with matching names (truncate.mp3)
         pass
