@@ -65,24 +65,43 @@ class Notes:
         note.rect.y = note.y
         self.note_group.add(note)
 
+    def randomly_generate_notes(self):
+        for i in range(0, 4):
+            if randint(1, 100) >= 25: continue
+
+            _note = Note(self.game)
+            position = i+1
+            _note.direction = _note.note_types[position-1]
+            _note.y = 0
+            _note.x = (position * 2) - 1
+            _note.image = self.note_images[position - 1]
+            _note.rect.x = _note.x * (self.screen.get_width() // 9) + (40 / 2)
+            _note.rect.y = _note.y
+            self.note_group.add(_note)
+
     def compare_keypress_with_notes(self, event_type, key_manager):
         if len(self.note_group) > 0:
             _note = self.find_nearest_arrow(event_type, key_manager)
             if _note == None: return
 
             distance = self.measure_note_distance(_note)
-            print(f'Note Distance: {distance:.2f}')
             _grace_distance = self.settings.note_leniency
+            _accuracy = ""
+            _grace_scalar_ratio = [2, 4, 6]
             if distance < _grace_distance and distance >= 0:
-                print(f'Arrow {_note.direction}')
-                _note.delete_note() # Perfect
-            elif distance < (_grace_distance * 2) and distance >= _grace_distance:
-                _note.delete_note() # Great
-            elif distance < (_grace_distance * 3) and distance >= (_grace_distance * 2):
-                _note.delete_note() # Good
-            elif distance < (_grace_distance * 5) and distance >= (_grace_distance * 3):
-                _note.delete_note() # Miss
+                _accuracy = "Perfect"
+            elif distance < (_grace_distance * _grace_scalar_ratio[0]) and distance >= _grace_distance:
+                _accuracy = "Great"
+            elif distance < (_grace_distance * _grace_scalar_ratio[1]) and distance >= (_grace_distance * _grace_scalar_ratio[0]):
+                _accuracy = "Good"
+            elif distance < (_grace_distance * _grace_scalar_ratio[2]) and distance >= (_grace_distance * _grace_scalar_ratio[1]):
+                _accuracy = "Miss"
             else: return # outside of range, no action taken
+
+            print(f'Arrow is {_note.direction}')
+            print(f'Note Distance: {distance:.2f}')
+            print(f'Accuracy: {_accuracy}\n')
+            _note.delete_note()
         # end funct
 
     def find_nearest_arrow(self, event_type, key_manager):
@@ -128,7 +147,7 @@ class Note(Sprite):
         self.settings = game.settings
         self.config = game.config
         self.scoreboard = game.scoreboard
-        self.gravity = Vector(0, 2.5)
+        self.gravity = Vector(0, self.settings.note_drop_speed)
         self._direction = ""
 
         self.image = self.note_images[0]

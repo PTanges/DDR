@@ -10,6 +10,10 @@ class Settings:
         self.FPS = self.FPS_default
         self.note_leniency = self.screen_height / 40
 
+        self.note_drop_speed = 2.0
+        # self.input_grace_scaling_factor = [2, 4, 6]
+        # self.grace_y_distance = 40
+
 class Config:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)

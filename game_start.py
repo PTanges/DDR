@@ -105,12 +105,12 @@ class GM:
     def play_track_screen(self, key_manager):
         notes = Notes(game=self)
         self.audio.play_music(self.audio.track01)
-        notes.randomly_generate_note()
         ticks = 0
         prev_ticks = 0
         while mixer.get_busy() == False:
             if ticks < prev_ticks:
-                notes.randomly_generate_note()
+                # notes.randomly_generate_note()
+                notes.randomly_generate_notes()
             prev_ticks = ticks
 
             self.check_events(key_manager, notes)
