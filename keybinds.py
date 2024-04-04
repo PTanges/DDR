@@ -4,7 +4,7 @@ class keyboard_commands:
     def __init__(self, game):
         self.game = game
         self.initialize_default_keybinds()
-        self.keyactions = [self.up, self.left, self.right, self.right]
+        self.keyactions = [self.up, self.left, self.right, self.down]
 
     def initialize_default_keybinds(self):
         self.up = pg.K_UP

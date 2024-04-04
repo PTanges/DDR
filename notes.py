@@ -73,10 +73,15 @@ class Notes:
             distance = self.measure_note_distance(_note)
             print(f'Note Distance: {distance:.2f}')
             _grace_distance = self.settings.note_leniency
-            if distance < _grace_distance and distance >= 0: _note.delete_note() # Perfect
-            elif distance < (_grace_distance * 2) and distance >= _grace_distance: _note.delete_note() # Great
-            elif distance < (_grace_distance * 3) and distance >= (_grace_distance * 2): _note.delete_note() # Good
-            elif distance < (_grace_distance * 5) and distance >= (_grace_distance * 3): _note.delete_note() # Miss
+            if distance < _grace_distance and distance >= 0:
+                print(f'Arrow {_note.direction}')
+                _note.delete_note() # Perfect
+            elif distance < (_grace_distance * 2) and distance >= _grace_distance:
+                _note.delete_note() # Great
+            elif distance < (_grace_distance * 3) and distance >= (_grace_distance * 2):
+                _note.delete_note() # Good
+            elif distance < (_grace_distance * 5) and distance >= (_grace_distance * 3):
+                _note.delete_note() # Miss
             else: return # outside of range, no action taken
         # end funct
 

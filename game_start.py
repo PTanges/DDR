@@ -137,7 +137,6 @@ class GM:
             if type == pg.KEYDOWN:
                 key = event.key
                 if key in key_manager.keyactions:
-                    print("HELLO")
                     notes.compare_keypress_with_notes(key, key_manager)
                     # Play a 'donk' sfx (SFX by Toby Fox would be appropriate)
                     # with a rand.pitch +/-0.05, with "Perfect" being the highest...
