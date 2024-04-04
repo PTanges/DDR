@@ -103,6 +103,7 @@ State Flow Diagram:
   > - ... Selection -> Credits -> Selection
   > - ... Selection -> Quit
 ![Rhythm Game - State Machine Diagram.png](Rhythm%20Game%20-%20State%20Machine%20Diagram.png)
+  > - - State Machine Diagram, states separated by "screens"
 
 Referenced Games
 - OSU (Desktop)
